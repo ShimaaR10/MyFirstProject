@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="E2E Suite">
+
+    <test name="RegressionTests">
+        <classes>
+            <class name="com.shimaa.frameworkpractice.tests.AccountCreationTest"/>
+            <class name="com.shimaa.frameworkpractice.tests.PurchaseFlowTest"/>
+            <class name="com.shimaa.frameworkpractice.tests.WishlistAndProfileTest"/>
+        </classes>
+    </test>
+
+
+</suite>
