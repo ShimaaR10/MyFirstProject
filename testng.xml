@@ -2,6 +2,11 @@
 
 <suite name="E2E Suite">
 
+    <!-- Add listener to capture screenshots on test failure -->
+    <listeners>
+        <listener class-name="com.shimaa.frameworkpractice.listeners.TestListener"/>
+    </listeners>
+
     <test name="RegressionTests">
         <classes>
             <class name="com.shimaa.frameworkpractice.tests.AccountCreationTest"/>
@@ -9,6 +14,5 @@
             <class name="com.shimaa.frameworkpractice.tests.WishlistAndProfileTest"/>
         </classes>
     </test>
-
 
 </suite>

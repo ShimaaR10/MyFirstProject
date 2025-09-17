@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.Duration;
 
 public class BaseTest {
-    protected WebDriver driver;
+    public WebDriver driver;
     protected WebDriverWait wait; // Add WebDriverWait for explicit waits
 
     @BeforeClass
