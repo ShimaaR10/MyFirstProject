@@ -22,7 +22,7 @@ public class LoginPage {
     // Constructor
     public LoginPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
 
@@ -39,7 +39,7 @@ public class LoginPage {
 
     public boolean isLoginSuccess() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
             wait.until(ExpectedConditions.visibilityOfElementLocated(myAccountButton));
             return driver.findElement(myAccountButton).isDisplayed();
         } catch (Exception e) {

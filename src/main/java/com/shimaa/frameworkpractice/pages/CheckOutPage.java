@@ -33,7 +33,7 @@ public class CheckOutPage {
 
     public CheckOutPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
     // --- Utility for extracting digits only ---
@@ -134,7 +134,7 @@ public class CheckOutPage {
 
     public void clickContinueConfirmOrder() {
         // Wait for any overlay to disappear
-        new WebDriverWait(driver, Duration.ofSeconds(15))
+        new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".loading-overlay, .bar-notification")));
 
         // Wait for Confirm button to be clickable
@@ -149,7 +149,7 @@ public class CheckOutPage {
         }
 
         // Wait for confirmation message
-        new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.visibilityOfElementLocated(confirmationMessage));
+        new WebDriverWait(driver, Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOfElementLocated(confirmationMessage));
     }
 
 

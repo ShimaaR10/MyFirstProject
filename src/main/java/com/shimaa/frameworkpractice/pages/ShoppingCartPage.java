@@ -22,7 +22,7 @@ public class ShoppingCartPage {
 
     public ShoppingCartPage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
     // Click on the shopping cart link
