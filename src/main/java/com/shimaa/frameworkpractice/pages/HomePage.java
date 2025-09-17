@@ -1,6 +1,7 @@
 package com.shimaa.frameworkpractice.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -20,6 +21,8 @@ public class HomePage {
     private final By searchBox = By.id("small-searchterms");
     private final By searchButton = By.cssSelector("button[type='submit']");
     private final By myAccountLink = By.xpath("//a[text()='My account']");
+    private final By notificationBar = By.cssSelector(".bar-notification.success");
+    private final By closeNotificationBtn = By.cssSelector(".bar-notification.success .close");
 
 
 
@@ -57,5 +60,14 @@ public class HomePage {
         wait.until(ExpectedConditions.elementToBeClickable(myAccountLink)).click();
     }
 
+    public void closeNotificationIfPresent() {
+        try {
+            WebElement notification = wait.until(ExpectedConditions.visibilityOfElementLocated(notificationBar));
+            WebElement closeBtn = notification.findElement(closeNotificationBtn);
+            closeBtn.click();
+            wait.until(ExpectedConditions.invisibilityOf(notification));
+        } catch (TimeoutException e) {
+        }
+    }
 
 }

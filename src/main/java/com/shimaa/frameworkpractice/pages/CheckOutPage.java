@@ -149,8 +149,7 @@ public class CheckOutPage {
         }
 
         // Wait for confirmation message
-        new WebDriverWait(driver, Duration.ofSeconds(15))
-                .until(ExpectedConditions.visibilityOfElementLocated(confirmationMessage));
+        new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.visibilityOfElementLocated(confirmationMessage));
     }
 
 
