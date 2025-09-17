@@ -1,6 +1,7 @@
 package com.shimaa.frameworkpractice.tests;
 
 import com.shimaa.frameworkpractice.base.BaseTest;
+import com.shimaa.frameworkpractice.utils.TestDataGenerator;
 import com.shimaa.frameworkpractice.utils.TestDataManager;
 import com.shimaa.frameworkpractice.pages.*;
 import org.testng.Assert;
@@ -10,6 +11,7 @@ import org.testng.annotations.Test;
 public class WishlistAndProfileTest extends BaseTest {
 
     private HomePage home;
+    private RegistrationPage registration;
     private LoginPage login;
     private SearchResultsPage searchResultPage;
     private WishlistPage wishlistPage;
@@ -17,12 +19,16 @@ public class WishlistAndProfileTest extends BaseTest {
     private CheckOutPage checkoutPage;
     private CustomerInfoPage customerInfoPage;
 
-    private String registeredEmail;
-    private String registeredPassword;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String newPassword;
 
     @BeforeClass
     public void setUpPages() {
         home = new HomePage(driver);
+        registration = new RegistrationPage(driver);
         login = new LoginPage(driver);
         searchResultPage = new SearchResultsPage(driver);
         wishlistPage = new WishlistPage(driver);
@@ -30,18 +36,32 @@ public class WishlistAndProfileTest extends BaseTest {
         checkoutPage = new CheckOutPage(driver);
         customerInfoPage = new CustomerInfoPage(driver);
 
-        registeredEmail = TestDataManager.registeredEmail;
-        registeredPassword = TestDataManager.registeredPassword;
+        // Generate dynamic test data using TestDataGenerator
+        firstName = TestDataGenerator.generateFirstName();
+        lastName = TestDataGenerator.generateLastName();
+        email = TestDataGenerator.generateEmail();
+        password = TestDataGenerator.generatePassword();
+        newPassword = TestDataGenerator.generateUpdatedPassword(password);
     }
 
 
     @Test(description = "Wishlist & Profile management flow")
     public void testWishlistAndProfileManagement() {
 
-        // 1. Log in
-        home.clickLogin();
-        login.login(registeredEmail, registeredPassword);
-        Assert.assertTrue(login.isLoginSuccess(), "Login failed!");
+
+        // Navigate to Registration Page
+        home.clickRegister();
+
+        // Fill the registration form
+        registration.fillRegistrationForm(firstName, lastName, email, "male", "MyCompany", password);
+
+
+        // Submit the form
+        registration.submitForm();
+
+        // Verify registration success
+        Assert.assertTrue(registration.isRegistrationSuccess(), "Registration failed!");
+
 
         // 2. Search and add product to wishlist
         home.searchProduct("Laptop");
@@ -58,9 +78,20 @@ public class WishlistAndProfileTest extends BaseTest {
         shoppingCartPage.clickShoppingCart();
         shoppingCartPage.checkTermsOfService();
 
+
         //Proceed to Checkout
-        shoppingCartPage.clickCheckOutButton();
-        checkoutPage.clickContinueBillingAddress();
+         shoppingCartPage.clickCheckOutButton();
+
+
+        //Fill in billing/shipping details
+        checkoutPage.selectCountry(TestDataManager.country);
+        checkoutPage.selectState(TestDataManager.state);
+        checkoutPage.cityInsert(TestDataManager.city);
+        checkoutPage.address1Insert(TestDataManager.address1);
+        checkoutPage.postalCodeInsert(TestDataManager.postalCode);
+        checkoutPage.phoneNumberInsert(TestDataManager.phoneNumber);
+        checkoutPage.clickContinueBtn();
+
 
         //Shipping Method
         checkoutPage.clickContinueShippingMethod();
@@ -81,18 +112,20 @@ public class WishlistAndProfileTest extends BaseTest {
         home.goToMyAccount();
         customerInfoPage.goToCustomerInfo();
 
-        // Update details (example: change password)
-        String newPassword = "Password123!Updated";
-        customerInfoPage.changePassword(registeredPassword, newPassword);
+        // Update details (change password)
+        customerInfoPage.changePassword(password, newPassword);
+
 
         // Verify confirmation
-        Assert.assertTrue(customerInfoPage.isPasswordChangeSuccess(),
-                "Password change confirmation not displayed!");
+        Assert.assertTrue(customerInfoPage.isPasswordChangeSuccess(), "Password change confirmation not displayed!");
+
+        //Close notification before logout
+        home.closeNotificationIfPresent();
 
         // Log out & log in with new password
         home.clickLogout();
         home.clickLogin();
-        login.login(registeredEmail, newPassword);
+        login.login(email, newPassword);
         Assert.assertTrue(login.isLoginSuccess(), "Re-login with new password failed!");
 
 

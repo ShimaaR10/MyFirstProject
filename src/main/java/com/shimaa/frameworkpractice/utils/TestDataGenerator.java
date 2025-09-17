@@ -21,5 +21,10 @@ public class TestDataGenerator {
     public static String generateLastName() {
         return "User";
     }
+
+    public static String generateUpdatedPassword(String oldPassword) {
+        return oldPassword + "Updated";
+    }
+
 }
 
