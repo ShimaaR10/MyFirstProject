@@ -17,19 +17,19 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Install Chrome
+      - name: Install Chrome and dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y google-chrome-stable xvfb
+          sudo apt-get install -y google-chrome-stable xvfb \
+          libnss3 libxss1 libappindicator3-1 fonts-liberation
 
       - name: Start Xvfb
         run: |
-          export DISPLAY=:99
           Xvfb :99 -screen 0 1920x1080x24 > /dev/null 2>&1 &
           echo "DISPLAY=:99" >> $GITHUB_ENV
 
       - name: Build with Maven (skip tests)
         run: mvn clean install -DskipTests
 
-      - name: Run Tests
-        run: mvn test
+      - name: Run Tests in headless mode
+        run: mvn test -Dheadless=true
