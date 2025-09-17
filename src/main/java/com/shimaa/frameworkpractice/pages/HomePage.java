@@ -1,10 +1,6 @@
 package com.shimaa.frameworkpractice.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -29,47 +25,37 @@ public class HomePage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
-    public void clickRegister() {
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(registerLink));
+    private void safeClick(By locator) {
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
         try {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
             element.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+        } catch (ElementClickInterceptedException e) {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
         }
+    }
+
+    public void clickRegister() {
+        safeClick(registerLink);
     }
 
     public void clickLogin() {
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(loginLink));
-        try {
-            element.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-        }
+        safeClick(loginLink);
     }
 
     public void clickLogout() {
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(logoutLink));
-        try {
-            element.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-        }
+        safeClick(logoutLink);
     }
 
     public void searchProduct(String productName) {
         WebElement searchInput = wait.until(ExpectedConditions.visibilityOfElementLocated(searchBox));
         searchInput.clear();
         searchInput.sendKeys(productName);
-        wait.until(ExpectedConditions.elementToBeClickable(searchButton)).click();
+        safeClick(searchButton);
     }
 
     public void goToMyAccount() {
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(myAccountLink));
-        try {
-            element.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
-        }
+        safeClick(myAccountLink);
     }
 
     public void closeNotificationIfPresent() {
@@ -79,7 +65,7 @@ public class HomePage {
             closeBtn.click();
             wait.until(ExpectedConditions.invisibilityOf(notification));
         } catch (TimeoutException e) {
-            // Notification not present; do nothing
+            // ignore if not present
         }
     }
 }
