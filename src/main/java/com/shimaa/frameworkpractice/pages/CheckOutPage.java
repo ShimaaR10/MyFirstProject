@@ -82,77 +82,79 @@ public class CheckOutPage {
 
     public void clickContinueBtn() {
         WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(continueBtn));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btn);
+        try { Thread.sleep(200); } catch (InterruptedException ignored) {}
         try {
             btn.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+        } catch (ElementClickInterceptedException e) {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
         }
     }
 
     // --- Checkout steps ---
-
     public void clickContinueBillingAddress() {
         WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(continueBillingBtn));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btn);
+        try { Thread.sleep(200); } catch (InterruptedException ignored) {}
         try {
             btn.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+        } catch (ElementClickInterceptedException e) {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
         }
     }
 
     public void clickContinueShippingMethod() {
-        wait.until(ExpectedConditions.elementToBeClickable(continueShippingMethod)).click();
+        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(continueShippingMethod));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btn);
+        try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+        try {
+            btn.click();
+        } catch (ElementClickInterceptedException e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        }
     }
 
     public void clickContinuePaymentMethod() {
         WebElement continueElement = wait.until(ExpectedConditions.elementToBeClickable(continuePaymentMethod));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", continueElement);
+        try { Thread.sleep(200); } catch (InterruptedException ignored) {}
         try {
             continueElement.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+        } catch (ElementClickInterceptedException e) {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", continueElement);
         }
     }
 
     public void clickContinuePaymentInfo() {
         WebElement continueElement = wait.until(ExpectedConditions.elementToBeClickable(continuePaymentInfo));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", continueElement);
+        try { Thread.sleep(200); } catch (InterruptedException ignored) {}
         try {
             continueElement.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
+        } catch (ElementClickInterceptedException e) {
             ((JavascriptExecutor) driver).executeScript("arguments[0].click();", continueElement);
         }
     }
 
-   /* public void clickContinueConfirmOrder() {
-        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(confirmOrder));
-        try {
-            btn.click();
-        } catch (org.openqa.selenium.ElementClickInterceptedException e) {
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
-        }
-    }*/
-
     public void clickContinueConfirmOrder() {
-        // Wait for any overlay to disappear
         new WebDriverWait(driver, Duration.ofSeconds(30))
                 .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".loading-overlay, .bar-notification")));
 
-        // Wait for Confirm button to be clickable
         WebElement btn = new WebDriverWait(driver, Duration.ofSeconds(15))
                 .until(ExpectedConditions.elementToBeClickable(confirmOrder));
 
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btn);
+        try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+
         try {
-            btn.click(); // try normal click
+            btn.click();
         } catch (ElementClickInterceptedException e) {
-            // fallback: scroll and click via JS
-            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click();", btn);
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
         }
 
-        // Wait for confirmation message
-        new WebDriverWait(driver, Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOfElementLocated(confirmationMessage));
+        new WebDriverWait(driver, Duration.ofSeconds(30))
+                .until(ExpectedConditions.visibilityOfElementLocated(confirmationMessage));
     }
-
-
 
     // --- Confirmation / Orders ---
     public String getOrderConfirmationMessage() {
@@ -160,7 +162,10 @@ public class CheckOutPage {
     }
 
     public void goToOrdersPage() {
-        wait.until(ExpectedConditions.elementToBeClickable(ordersLink)).click();
+        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(ordersLink));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btn);
+        try { Thread.sleep(200); } catch (InterruptedException ignored) {}
+        btn.click();
     }
 
     public boolean isAnyOrderListed() {

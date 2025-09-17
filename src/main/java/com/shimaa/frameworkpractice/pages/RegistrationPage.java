@@ -1,6 +1,7 @@
 package com.shimaa.frameworkpractice.pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -10,9 +11,7 @@ import java.time.Duration;
 
 public class RegistrationPage {
 
-
     private final WebDriver driver;
-
 
     // ===== Locators =====
     private final By maleRadio = By.id("gender-male");
@@ -26,7 +25,6 @@ public class RegistrationPage {
     private final By registerButton = By.id("register-button");
     private final By successMessage = By.cssSelector(".result");
 
-
     private WebDriverWait wait;
 
     // ===== Constructor =====
@@ -35,15 +33,18 @@ public class RegistrationPage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
-
     public void fillRegistrationForm(String firstName, String lastName, String email,
                                      String gender, String company, String password) {
 
-        // Gender selection
+        // Gender selection with scroll
         if (gender.equalsIgnoreCase("male")) {
-            wait.until(ExpectedConditions.elementToBeClickable(maleRadio)).click();
+            WebElement male = wait.until(ExpectedConditions.elementToBeClickable(maleRadio));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", male);
+            male.click();
         } else if (gender.equalsIgnoreCase("female")) {
-            wait.until(ExpectedConditions.elementToBeClickable(femaleRadio)).click();
+            WebElement female = wait.until(ExpectedConditions.elementToBeClickable(femaleRadio));
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", female);
+            female.click();
         }
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameField)).sendKeys(firstName);
@@ -55,7 +56,13 @@ public class RegistrationPage {
     }
 
     public void submitForm() {
-        wait.until(ExpectedConditions.elementToBeClickable(registerButton)).click();
+        WebElement btn = wait.until(ExpectedConditions.elementToBeClickable(registerButton));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btn);
+        try {
+            btn.click();
+        } catch (Exception e) {
+            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", btn);
+        }
     }
 
     public boolean isRegistrationSuccess() {
@@ -66,5 +73,4 @@ public class RegistrationPage {
             return false;
         }
     }
-
 }
