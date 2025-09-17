@@ -31,5 +31,6 @@ jobs:
       - name: Build with Maven (skip tests)
         run: mvn clean install -DskipTests
 
-      - name: Run Tests in headless mode
-        run: mvn test -Dheadless=true
+      - name: Run Selenium Tests in headless mode
+        run: |
+          DISPLAY=:99 mvn test -Dheadless=true
